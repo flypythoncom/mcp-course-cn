@@ -1,11 +1,11 @@
-# Model Context Protocol (MCP) 课程 | MCP Course
+# Model Context Protocol (MCP) Course | MCP课程
 
 ![MCP 课程横幅](https://github.com/user-attachments/assets/d26dcc5e-46cb-449e-aecb-49ece10d342a)
 
 
 ## 中文版
 
-这是 [HuggingFace Model Context Protocol (MCP) 课程](https://github.com/huggingface/mcp-course) 的中文翻译项目。
+这是 [HuggingFace Model Context Protocol (MCP) Course](https://github.com/huggingface/mcp-course) 的中文翻译项目。
 
 如果您喜欢本课程，**请不要犹豫，为这个仓库⭐点亮星标**。这有助于我们**让课程获得更多关注🤗**。
 
