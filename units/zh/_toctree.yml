@@ -1,0 +1,46 @@
+- title: "0. 欢迎来到MCP课程"
+  sections:
+  - local: unit0/introduction
+    title: 欢迎来到MCP课程
+    
+- title: "1. 模型上下文协议介绍"
+  sections:
+  - local: unit1/introduction
+    title: 模型上下文协议(MCP)介绍
+  - local: unit1/key-concepts
+    title: 关键概念和术语
+  - local: unit1/architectural-components
+    title: 架构组件
+  - local: unit1/communication-protocol
+    title: 通信协议
+  - local: unit1/capabilities
+    title: 理解MCP能力
+  - local: unit1/sdk
+    title: MCP SDK
+  - local: unit1/mcp-clients
+    title: MCP客户端
+  - local: unit1/gradio-mcp
+    title: Gradio MCP集成
+
+- title: "2. 用例：端到端MCP应用"
+  sections:
+  - local: unit2/introduction
+    title: MCP应用构建介绍
+  - local: unit2/gradio-server
+    title: 构建Gradio MCP服务器
+  - local: unit2/clients
+    title: 在应用中使用MCP客户端
+  - local: unit2/gradio-client
+    title: 使用Gradio构建MCP客户端
+  - local: unit2/tiny-agents
+    title: 使用TypeScript构建微型代理
+
+- title: "3. 用例：高级MCP开发"
+  sections:
+  - local: unit3/introduction
+    title: 即将推出
+
+- title: "额外单元"
+  sections:
+  - local: unit4/introduction
+    title: 即将推出 

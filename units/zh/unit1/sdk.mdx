@@ -1,0 +1,168 @@
+# MCP SDK
+
+模型上下文协议为JavaScript、Python和其他语言提供官方SDK。这使得在您的应用程序中实现MCP客户端和服务器变得容易。这些SDK处理低级协议细节，让您可以专注于构建应用程序的功能。
+
+## SDK概述
+
+两种SDK提供类似的核心功能，遵循我们之前讨论的MCP协议规范。它们处理：
+
+- 协议级通信
+- 能力注册和发现
+- 消息序列化/反序列化
+- 连接管理
+- 错误处理
+
+## 核心原语实现
+
+让我们探索如何使用这两种SDK实现每个核心原语（工具、资源和提示）。
+
+<hfoptions id="server-implementation">
+<hfoption id="python">
+
+<Youtube id="exzrb5QNUis" />
+
+```python
+from mcp.server.fastmcp import FastMCP
+
+# 创建MCP服务器
+mcp = FastMCP("Weather Service")
+
+
+@mcp.tool()
+def get_weather(location: str) -> str:
+    """获取指定位置的当前天气。"""
+    return f"Weather in {location}: Sunny, 72°F"
+
+
+@mcp.resource("weather://{location}")
+def weather_resource(location: str) -> str:
+    """提供天气数据作为资源。"""
+    return f"Weather data for {location}: Sunny, 72°F"
+
+
+@mcp.prompt()
+def weather_report(location: str) -> str:
+    """创建天气报告提示。"""
+    return f"""You are a weather reporter. Weather report for {location}?"""
+
+
+# 运行服务器
+if __name__ == "__main__":
+    mcp.run()
+
+```
+
+</hfoption>
+<hfoption id="javascript">
+
+```javascript
+import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { z } from "zod";
+
+// 创建MCP服务器
+const server = new McpServer({
+    name: "Weather Service",
+    version: "1.0.0"
+});
+
+// 工具实现
+server.tool("get_weather",
+    { location: z.string() },
+    async ({ location }) => ({
+        content: [{
+            type: "text",
+            text: `Weather in ${location}: Sunny, 72°F`
+        }]
+    })
+);
+
+// 资源实现
+server.resource(
+    "weather",
+    new ResourceTemplate("weather://{location}", { list: undefined }),
+    async (uri, { location }) => ({
+        contents: [{
+            uri: uri.href,
+            text: `Weather data for ${location}: Sunny, 72°F`
+        }]
+    })
+);
+
+// 提示实现
+server.prompt(
+    "weather_report",
+    { location: z.string() },
+    async ({ location }) => ({
+        messages: [
+            {
+                role: "assistant",
+                content: {
+                    type: "text",
+                    text: "You are a weather reporter."
+                }
+            },
+            {
+                role: "user",
+                content: {
+                    type: "text",
+                    text: `Weather report for ${location}?`
+                }
+            }
+        ]
+    })
+);
+
+// 运行服务器
+const transport = new StdioServerTransport();
+await server.connect(transport);
+```
+
+</hfoption>
+</hfoptions>
+
+实现服务器后，您可以通过运行服务器脚本来启动它。
+
+```bash
+mcp dev server.py
+```
+
+这将初始化一个运行`server.py`文件的开发服务器。并记录以下输出：
+
+```bash
+Starting MCP inspector...
+⚙️ Proxy server listening on port 6277
+Spawned stdio transport
+Connected MCP client to backing server transport
+Created web app transport
+Set up MCP proxy
+🔍 MCP Inspector is up and running at http://127.0.0.1:6274 🚀
+```
+
+然后，您可以在[http://127.0.0.1:6274](http://127.0.0.1:6274)打开MCP检查器，查看服务器的能力并与之交互。
+
+您将看到服务器的能力以及通过UI调用它们的功能。
+
+![MCP检查器](https://huggingface.co/datasets/mcp-course/images/resolve/main/unit1/6.png)
+
+## MCP SDK
+
+MCP设计为与语言无关，并且有几种流行编程语言的官方SDK：
+
+| 语言 | 仓库 | 维护者 | 状态 |
+|----------|------------|---------------|--------|
+| TypeScript | [github.com/modelcontextprotocol/typescript-sdk](https://github.com/modelcontextprotocol/typescript-sdk) | Anthropic | 活跃 |
+| Python | [github.com/modelcontextprotocol/python-sdk](https://github.com/modelcontextprotocol/python-sdk) | Anthropic | 活跃 |
+| Java | [github.com/modelcontextprotocol/java-sdk](https://github.com/modelcontextprotocol/java-sdk) | Spring AI (VMware) | 活跃 |
+| Kotlin | [github.com/modelcontextprotocol/kotlin-sdk](https://github.com/modelcontextprotocol/kotlin-sdk) | JetBrains | 活跃 |
+| C# | [github.com/modelcontextprotocol/csharp-sdk](https://github.com/modelcontextprotocol/csharp-sdk) | Microsoft | 活跃（预览版） |
+| Swift | [github.com/modelcontextprotocol/swift-sdk](https://github.com/modelcontextprotocol/swift-sdk) | loopwork-ai | 活跃 |
+| Rust | [github.com/modelcontextprotocol/rust-sdk](https://github.com/modelcontextprotocol/rust-sdk) | Anthropic/社区 | 活跃 |
+
+这些SDK提供特定于语言的抽象，简化了使用MCP协议的工作，让您可以专注于实现服务器或客户端的核心逻辑，而不是处理低级协议细节。
+
+## 下一步
+
+我们只是触及了MCP功能的表面，但您已经成功运行了一个基本服务器。实际上，您还使用了浏览器中的MCP客户端连接到它。
+
+在下一节中，我们将看看如何从LLM连接到您的服务器。 
