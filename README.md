@@ -7,9 +7,6 @@
 
 这是 [HuggingFace Model Context Protocol (MCP) Course](https://github.com/huggingface/mcp-course) 的中文翻译项目。
 
-如果您喜欢本课程，**请不要犹豫，为这个仓库⭐点亮星标**。这有助于我们**让课程获得更多关注🤗**。
-
-<img src="https://huggingface.co/datasets/agents-course/course-images/resolve/main/en/communication/please_star.gif" alt="为仓库点亮星标" />
 
 ### 项目概述
 
